@@ -6,4 +6,3 @@ var ctrl = new Controller();
 
 ctrl.argvProcess();
 ctrl.deckOptions();
-ctrl.makeArray();

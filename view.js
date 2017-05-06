@@ -3,17 +3,23 @@ class View {
 
   }
 
-  congrats(){
-    console.log('Selamat Anda Berhasil Menjawab Semua Pertanyaan!')
+  header(){
+    console.log('\n\n========== Selamat Bermain! ==========\n')
   }
   showQuestion(quest){
     console.log(`${quest}`);
   }
   showRight(){
-    console.log(`\nBener!\n`);
+    console.log(`\nBenar!\n`);
   }
   showWrong(wrong){
     console.log(`\nSalah ${wrong}!\n`);
+  }
+  showSkip(){
+    console.log(`\nSoal Selanjutnya!\n`);
+  }
+  congrats(){
+    console.log('\n*******Selamat Anda Berhasil Menjawab Semua Pertanyaan!*******\n\n')
   }
 }
 
