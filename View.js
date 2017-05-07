@@ -38,7 +38,7 @@ answered(guess,input,hint){
     console.log(`\nWrong Answers: ${guess}`)
   }
   if(guess > 10){
-    console.log(`You are so aweful! the answer is: ${hint}`)
+    console.log(`You are so awful! the answer is: ${hint}`)
   }  
 
 }
