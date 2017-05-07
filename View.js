@@ -32,13 +32,13 @@ judgement(input,answer){
 
 answered(guess,input,hint){
   if(guess === 1){
-  console.log(`Wrong Answer: 1`)
+  console.log(`\nWrong Answer: 1`)
   }
-  else if (guess > 1){
-    console.log(`Wrong Answers: ${guess}`)
+  if (guess > 1){
+    console.log(`\nWrong Answers: ${guess}`)
   }
-  else if(guess > 10){
-    console.log(`Hint: ${hint}`)
+  if(guess > 10){
+    console.log(`You are so aweful! the answer is: ${hint}`)
   }  
 
 }

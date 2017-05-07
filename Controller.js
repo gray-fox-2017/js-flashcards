@@ -65,10 +65,10 @@ class Controller{
     let answer = input.toLowerCase().trim() === this.quiz[this.indexquiz[this.index]].term.toLowerCase().trim()
     
     if(answer === true && this.indexquiz.length > 0){
+       this.view.answered(this.guess,answer,this.quiz[this.indexquiz[this.index]].term)
        this.guess = 0
        this.indexquiz.shift();
        this.view.judgement(input,answer)
-       this.view.answered(this.guess,answer,this.quiz[this.indexquiz[this.index]].term)
        this.displayQuestion();
      }
     else if(input.toLowerCase().trim() ==='skip' && this.indexquiz.length>0){
@@ -78,9 +78,9 @@ class Controller{
       this.displayQuestion()
     }
     else if(answer === false && this.indexquiz.length > 0 && input.toLowerCase().trim() !== 'skip'){
+      this.view.answered(this.guess,answer,this.quiz[this.indexquiz[this.index]].term)
        this.guess += 1;
        this.view.judgement(input,answer)
-       this.view.answered(this.guess,answer,this.quiz[this.indexquiz[this.index]].term)
        this.displayQuestion()
       }       
    });
