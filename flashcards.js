@@ -16,9 +16,8 @@ quiz(choice){
       db.all(query, function(err, rows){
         if (err){
           let menu = new View
-          console.log(err)
-          menu.back()
           menu.start()
+          menu.back()
         } else {
           let data = new Model(rows)
           let game = new Controller(rows)

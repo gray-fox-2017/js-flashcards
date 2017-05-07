@@ -36,6 +36,9 @@ class Controller{
   }
   
   init(choice){
+    if(!choice){
+      this.view.start()
+    }
     this.view.choice(choice)
     this.start() 
   }
@@ -65,7 +68,7 @@ class Controller{
        this.guess = 0
        this.indexquiz.shift();
        this.view.judgement(input,answer)
-       this.view.answered(this.guess,answer)
+       this.view.answered(this.guess,answer,this.quiz[this.indexquiz[this.index]].term)
        this.displayQuestion();
      }
     else if(input.toLowerCase().trim() ==='skip' && this.indexquiz.length>0){
@@ -77,7 +80,7 @@ class Controller{
     else if(answer === false && this.indexquiz.length > 0 && input.toLowerCase().trim() !== 'skip'){
        this.guess += 1;
        this.view.judgement(input,answer)
-       this.view.answered(this.guess,answer)
+       this.view.answered(this.guess,answer,this.quiz[this.indexquiz[this.index]].term)
        this.displayQuestion()
       }       
    });
