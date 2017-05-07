@@ -3,96 +3,81 @@ const rls = require('readline-sync');
 const sqlite = require('sqlite-sync');
 sqlite.connect('./cards.db');
 
-class Model {
+class Deck {
   constructor() {
     this.readCategory();
     this._deck = [];
   }
-
-  emptyDeck() {
-    this._deck = [];
-  }
-
   readFlashCard(category = 'economy') {
     let select =`SELECT*FROM ${category}`;
     this._deck = sqlite.run(select);
   }
-
   readCategory() {
     this._category = [];
     let cat = sqlite.run("SELECT name FROM msCategory");
     cat.forEach((x)=>this._category.push(x.name));
   }
-
-  getStrCategory() {
-    return this._category.join(' | ');
-  }
-
+  getStrCategory() { return this._category.join(' | '); }
   searchCategory(category) {
-    return this._category.findIndex( (x)=> x === (''+category).trim().toLowerCase());
+    return this._category.findIndex( (x)=> x.trim().toLowerCase() === (''+category).trim().toLowerCase());
   }
-
-
 }
 
 class Controller {
   constructor() {
-    this._view = new View();
-    this._model = new Model();
-  }
-  start() {
+    this._view = new UI();
+    this._model = new Deck();
     this._hint = 5;
     this._heart= 5;
-    this._model.emptyDeck();
-    this._view.showStart();
-    this.inputCategory();
+    this.checkCategory();
   }
-  inputCategory() {
-    let category = this._model.getStrCategory();
-    let options = '';
-    let idx = -1;
-    while(options === '' || idx === -1) {
-      options = rls.question(`Insert the deck you want to play [${category}]`);
-      idx = this._model.searchCategory(options);
-      if (idx == -1) {
-        this._view.showErrMsg('ERROR',`Category "${options}" is not exist`);
-        options = '';
-      } else {
+  checkCategory() {
+    if (process.argv.length > 2) {
+      let options = process.argv[2];
+      let idx = this._model.searchCategory(options);
+      if (idx == -1) this._view.showErrMsg('ERROR',`Category "${options}" is not exist`);
+      else {
+        this._view.showStart();
         this._model.readFlashCard(options);
-        console.log('play')
         this.playDeck();
       }
+    } else {
+      let listcate = this._model.getStrCategory();
+      this._view.showErrMsg('ERROR','Please Insert Category');
+      console.log(`List of allowed Category [${listcate}]`);
     }
   }
 
   playDeck() {
     let ans = '';
-    let idx = 0;
+    let idx = 1;
+    let len = this._model._deck.length;
     this._model._deck.forEach((x) => {
-      if(this._heart > 0){
-        this._view.showDefinition(x.definition);
+      if (this._heart > 0) {
+        this._view.showDefinition(idx,len,x.definition);
+        let tries = 0;
         while (ans === '' && this._heart > 0) {
           ans = rls.question(`The term is : `);
           if (ans.trim().toLowerCase() === 'hint') {
-            if (this._hint > 0 ){
+            if (this._hint > 0 ) {
               this._hint -= 1;
               console.log(`${this._hint} hint left`);
-              console.log(x.term[0]+ x.term.substr(1).replace(/\w/gi,'.'));
-            } else
-              console.log('You are out of hint!');
+              console.log('HINT : '+x.term.charAt(0)+ x.term.substr(1).replace(/\w/gi,'.'));
+            } else console.log('You are out of hint!');
             ans = '';
           } else if (ans.trim().toLowerCase() !== x.term.trim().toLowerCase()) {
+            tries += 1 ;
             if (this._heart > 0) {
               this._heart -= 1;
-              console.log(`Only ${this._heart} heart left`);
-              this._view.showErrMsg('INCORRECT','Try again!');
+              let err = (this._heart > 0 ? 'Try Again! ' : '') + `Only ${this._heart} heart left, you have tried ${tries}x`;
+              this._view.showErrMsg('INCORRECT',`${err}`);
               ans = '';
             }
           } else this._view.showScsMsg();
         }
         ans = '';
         idx += 1;
-      }
+      } else return;
     });
 
     let stat = (this._heart > 0? 'win' : 'lose');
@@ -100,25 +85,15 @@ class Controller {
   }
 
   endGame(stat) {
-    if (stat === 'win') this._view.showWin();
-    else this._view.showLose();
-
-    let playAgain = rls.question('Do you want to play again [y|n]? ');
-    if (playAgain.trim().toLowerCase() === 'y') {
-      this.start();
-    } else {
-      this._view.showGoodLuck();
-    }
-
+    this._view.showEndGame(stat);
+    console.log('Bye Buddy, Rest Well and Good Luck for Your Exam');
+    console.log('or...');
+    console.log(`Try others deck [${this._model.getStrCategory()}]`);
   }
-
-  lose() {}
 }
 
-class View {
-  constructor() {
-
-  }
+class UI {
+  constructor() {}
   showStart() {
     this.reset();
     console.log('===============================');
@@ -130,32 +105,21 @@ class View {
     console.log('===============================');
   }
   showErrMsg(tag,err) {
-    console.log(`[${tag}]${err}`);
+    console.log(`[${tag}] ${err}`);
   }
   showScsMsg(scs) {
     console.log('Correct!');
   }
-  showDefinition(def) {
-    console.log(`[DEFINITION] ${def}`);
+  showDefinition(idx,len,def) {
+    console.log(`[${idx}/${len}]. [DEFINITION] ${def}`);
   }
-  showWin() {
+  showEndGame(status = 'win') {
     this.reset();
-    console.log('You Win!');
-  }
-  showLose() {
-    this.reset();
-    console.log('You Lose! You better study next time');
-  }
-  showGoodLuck() {
-    this.reset();
-    console.log('Bye Buddy, Rest Well and Good Luck for Your Exam');
+    console.log((status === 'win'? 'You Win!' : 'You Lose! You better study next time'));
   }
   reset(){
     console.log("\x1B[2J");
   }
-
 }
 
-// let model = new Model();
 let fc = new Controller();
-fc.start();
