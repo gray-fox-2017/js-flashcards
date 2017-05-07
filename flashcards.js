@@ -84,6 +84,7 @@ class Display {
   constructor() {}
 
   welcomeScreen(option) {
+    if(option == undefined) option = "social";
     console.log(`Welcome to the game, you have chosen "${option}" questions!`)
     console.log(`\nTo play just enter the correct term for each definition. Ready? Go!`)
   }
