@@ -16,15 +16,16 @@ class Controller{
   constructor(rows){
     this.view = new View
     this.model = new Model(rows)
-    this.currentQuiz = 0
     this.guess = 0
     this.quiz = this.model.quiz
-    // this.skipcounter = []
-    // this.counter = 0
-    // this.quizcounter = 0
-    // this.skiplast = 0
     this.indexquiz = this.getIndex()
     this.index = 0
+    // this.currentQuiz = 0
+    // this.result = false
+    // // this.skipcounter = []
+    // // this.counter = 0
+    // // this.quizcounter = 0
+    // // this.skiplast = 0
   }
   
   getIndex(){
@@ -71,14 +72,14 @@ class Controller{
        this.view.judgement(input,answer)
        this.displayQuestion();
      }
-    else if(input.toLowerCase().trim() ==='skip' && this.indexquiz.length>0){
+    else if(input.toLowerCase().trim() ==='skip' && this.indexquiz.length > 0){
       this.view.skip(this.indexquiz[0+1])
       this.indexquiz.push(this.indexquiz[0]);
       this.indexquiz.shift();
       this.displayQuestion()
     }
     else if(answer === false && this.indexquiz.length > 0 && input.toLowerCase().trim() !== 'skip'){
-      this.view.answered(this.guess,answer,this.quiz[this.indexquiz[this.index]].term)
+       this.view.answered(this.guess,answer,this.quiz[this.indexquiz[this.index]].term)
        this.guess += 1;
        this.view.judgement(input,answer)
        this.displayQuestion()

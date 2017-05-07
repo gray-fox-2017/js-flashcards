@@ -12,7 +12,6 @@ class Flashcard{
 
 quiz(choice){
     let query = `SELECT * FROM ${this.choice}`;
-    db.serialize(function(){
       db.all(query, function(err, rows){
         if (err){
           let menu = new View
@@ -23,10 +22,9 @@ quiz(choice){
           let game = new Controller(rows)
           game.init(choice)
           }
-        })
-      });    
-    }    
-  }
+        })  
+      }    
+    }
 
 
 let argv = process.argv  
