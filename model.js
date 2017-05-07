@@ -10,9 +10,9 @@ class Model {
   var db = new sqlite3.Database(file);
   var larray = [];
 
-    db.all('SELECT * FROM SOCIAL', function(err, rows) {
+    db.all('SELECT * FROM SOCIAL',(err, rows) => {
 
-        rows.forEach(function(row) {
+        rows.forEach(row => {
             larray.push({definition:row.definition,term:row.term});
         })
           return done(larray);
@@ -25,9 +25,9 @@ class Model {
   var db = new sqlite3.Database(file);
   var larray = [];
 
-    db.all('SELECT * FROM SCIENCE', function(err, rows) {
+    db.all('SELECT * FROM SCIENCE',(err, rows) => {
 
-        rows.forEach(function(row) {
+        rows.forEach(row => {
             larray.push({definition:row.definition,term:row.term});
         })
           return done(larray);

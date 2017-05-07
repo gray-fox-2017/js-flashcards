@@ -14,6 +14,7 @@ class Controller {
     this._view = new View();
     this.play = this;
     this.arr=[];
+    this.length=0;
   }
 
   argvProcess(){
@@ -73,7 +74,7 @@ class Controller {
   playProcess(command,play,result,index,arr,wrong){
     play._view.showQuestion(result[arr[index]].definition)
     rl.question('',(answer) => {
-      if(answer===result[arr[index]].term && arr.length>0){
+      if(answer===result[arr[index]].term.toLowerCase() && arr.length>0){
          arr.shift();
          play._view.showRight()
          return play.playCards(command,arr,wrong);
@@ -84,7 +85,7 @@ class Controller {
         arr.shift();
         return play.playCards(command,arr,wrong);
       }
-      if(answer!=result[arr[index]].term && arr.length>0){
+      if(answer!=result[arr[index]].term.toLowerCase() && arr.length>0){
          wrong+=1;
          play._view.showWrong(wrong)
          return play.playCards(command,arr,wrong);
@@ -93,21 +94,14 @@ class Controller {
   }
 
   makeArray(command){
-    let length=0;
+    let play=this.play;
     let arr=[]
     if(command==='mycards'){
-     //  let hasil= this._model.getMyCards(function(result){
-     //    length=result.length;
-     //  });
-     length=3
+     play.length=3
     }else{
-     //  let hasil= this._model.getDefaultsCards(function(result){
-     //    length=result.length;
-     //  });
-     length=6
+     play.length=6
     }
-
-    for(let i=0; i<length; i++){
+    for(let i=0; i<play.length; i++){
       arr.push(i);
     }
     this.arr=arr;
