@@ -6,12 +6,11 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./cards.db');
 
 class Flashcard{
-  constructor(choice){
-    this.choice = choice
+  constructor(){
 }
 
 quiz(choice){
-    let query = `SELECT * FROM ${this.choice}`;
+    let query = `SELECT * FROM ${choice}`;
       db.all(query, function(err, rows){
         if (err){
           let menu = new View
