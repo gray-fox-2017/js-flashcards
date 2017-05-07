@@ -27,5 +27,5 @@ quiz(choice){
 
 
 let argv = process.argv  
-let start = new Flashcard(argv[2])
+let start = new Flashcard()
 start.quiz(argv[2])
