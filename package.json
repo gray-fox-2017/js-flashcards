@@ -1,0 +1,24 @@
+{
+  "name": "js-flashcards",
+  "version": "1.0.0",
+  "description": "",
+  "main": "flashcards.js",
+  "dependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "sqlite3": "^3.1.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gray-fox-2017/js-flashcards.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gray-fox-2017/js-flashcards/issues"
+  },
+  "homepage": "https://github.com/gray-fox-2017/js-flashcards#readme"
+}
