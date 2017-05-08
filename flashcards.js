@@ -61,15 +61,19 @@ class Execute {
   interface(number = 0, wrong = 0) {
     if(this.data.length >= 1) {
       let answer = readlineSync.question(`\n${this.data[number].definition}:\n`)
-
-      if(answer == this.data[number].term.toString()) {
+      answer = answer.toLowerCase();
+      let solution = this.data[number].term.toString().toLowerCase();
+      
+      if(answer == solution) {
         this.model.correct(number);
         if(this.data.length > 0) this.view.correct(this.data.length);
         return this.interface(number);
       } else if(answer == "skip") {
         this.model.skipped(number);
         this.interface(number);
-      } else {
+      } else if(answer == "exit") {
+        process.exit();
+      }else {
         wrong++;
         this.view.wrong(wrong);
         return this.interface(number, wrong);
